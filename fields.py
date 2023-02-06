@@ -10,16 +10,16 @@ class GenericField:
 class StringField(GenericField):
     def __init__(self, name, value):
         super().__init__(name, value)
-        self.dataType = 'String'
+        self.dataType = 'string'
 	
 
 class IntegerField(GenericField):
     def __init__(self, name, value):
         super().__init__(name, value)
-        self.dataType = 'Integer'
+        self.dataType = 'integer'
 	
 
 class FloatField(GenericField):
     def __init__(self, name, value):
         super().__init__(name, value)
-        self.dataType = 'Float'
+        self.dataType = 'float'
