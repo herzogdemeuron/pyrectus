@@ -7,7 +7,7 @@ import re
 import sys
 import requests
 import os
-from log import Log
+from .log import Log
 from time import time
 from datetime import datetime
 from abc import ABCMeta, abstractmethod
@@ -96,8 +96,8 @@ class DirectusAPI():
 			return responseJson['data']
 		except:
 			if log:
-				Log.error('Request has failed')
-				Log.error(response.json())
+				Log().error('Request has failed')
+				Log().error(response.json())
 			return None
 
 	def post(self, endpoint, data):
@@ -121,9 +121,9 @@ class DirectusAPI():
 			responseJson = response.json()
 			return responseJson['data']
 		except:
-			Log.error(data)
-			Log.error('Request has failed')
-			Log.error(response.json())
+			Log().error(data)
+			Log().error('Request has failed')
+			Log().error(response.json())
 			return None
 
 	def collectionExists(self):
@@ -199,7 +199,7 @@ class DirectusAPI():
 
 class DirectusStorageDriver(AbstractStorageDriver):
 	"""
-	This storage driver handles storing snapshots to in Directus using the Directus API.
+	This storage driver handles storing data to in Directus using the Directus API.
 	"""
 
 	def __init__(self, config):
@@ -216,7 +216,7 @@ class DirectusStorageDriver(AbstractStorageDriver):
 			host = config['host'].rstrip('/')
 			token = parseToken(config['token'])
 		except:
-			Log.error('Invalid Directus configuration')
+			Log().error('Invalid Directus configuration')
 			sys.exit(1)
 		self.api = DirectusAPI(host, token, collection)
 		self.collection = collection
