@@ -1,5 +1,3 @@
-
-
 class GenericField:
     """
     Generic data class.
@@ -50,3 +48,29 @@ class FloatField(GenericField):
     def __init__(self, name, value):
         super().__init__(name, value)
         self.dataType = 'float'
+
+
+class TimestampField(GenericField):
+    """
+    Inits an new 'TimestampField' instance.
+
+    Args:
+        name (str): The field name
+        value (str): The filed value
+    """
+    def __init__(self, name, value):
+        super().__init__(name, value)
+        self.dataType = 'timestamp'
+
+
+class JSONField(GenericField):
+    """
+    Inits an new 'JSONField' instance.
+
+    Args:
+        name (str): The field name
+        value (str): The filed value
+    """
+    def __init__(self, name, value):
+        super().__init__(name, value)
+        self.dataType = 'json'
