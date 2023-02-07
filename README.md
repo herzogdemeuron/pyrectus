@@ -1,6 +1,6 @@
 # pyrectus
 
-Pyrectus is a little helper designed to simplyfly posting data to a directus collection.
+Pyrectus is a little python helper designed to simplyfly posting data to Directus.
 
 Example use:
 
