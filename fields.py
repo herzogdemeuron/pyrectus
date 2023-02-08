@@ -18,7 +18,7 @@ class StringField(GenericField):
 
         Args:
             name (str): The field name
-            value (str): The filed value
+            value (str): The field value
         """
         super().__init__(name, value)
         self.dataType = 'string'
@@ -30,7 +30,7 @@ class IntegerField(GenericField):
 
     Args:
         name (str): The field name
-        value (str): The filed value
+        value (str): The field value
     """
     def __init__(self, name, value):
         super().__init__(name, value)
@@ -43,7 +43,7 @@ class FloatField(GenericField):
 
     Args:
         name (str): The field name
-        value (str): The filed value
+        value (str): The field value
     """
     def __init__(self, name, value):
         super().__init__(name, value)
@@ -56,7 +56,7 @@ class TimestampField(GenericField):
 
     Args:
         name (str): The field name
-        value (str): The filed value
+        value (str): The field value
     """
     def __init__(self, name, value):
         super().__init__(name, value)
@@ -69,8 +69,9 @@ class JSONField(GenericField):
 
     Args:
         name (str): The field name
-        value (str): The filed value
+        value (mixed): The field value
     """
     def __init__(self, name, value):
-        super().__init__(name, value)
+        import json
+        super().__init__(name, json.dumps(value))
         self.dataType = 'json'
