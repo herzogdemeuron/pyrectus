@@ -255,3 +255,4 @@ class DirectusStorageDriver(AbstractStorageDriver):
 			data[item.name] = item.value
 		api.post('items/{}'.format(self.collection), data)
 		api.clearCache()
+		Log().info('Send complete')
