@@ -75,3 +75,17 @@ class JSONField(GenericField):
         import json
         super().__init__(name, json.dumps(value))
         self.dataType = 'json'
+
+
+class BooleanField(GenericField):
+    """
+    Inits an new 'BooleanField' instance.
+
+    Args:
+        name (str): The field name
+        value (bool): The field value
+    """
+    def __init__(self, name, value):
+        import json
+        super().__init__(name, json.dumps(value))
+        self.dataType = 'boolean'
