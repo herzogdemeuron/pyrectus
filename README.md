@@ -5,7 +5,7 @@ Pyrectus is a little python helper designed to simplyfly posting data to Directu
 Example use:
 
     import sys
-    sys.path.append("C:/pyrectus")
+    sys.path.append("C:/pyrectus_parent_dir")
     import pyrectus
 
     config = {}
