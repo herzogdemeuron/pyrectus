@@ -117,6 +117,7 @@ class DirectusAPI():
 		    data=json.dumps(data),
 		    allow_redirects=True
 		)
+		Log().info('Directus status code: {}'.format(response.status_code))
 		try:
 			responseJson = response.json()
 			return responseJson['data']
@@ -253,6 +254,6 @@ class DirectusStorageDriver(AbstractStorageDriver):
 		data['timestamp'] = self.timestamp
 		for item in dataProviderResults:
 			data[item.name] = item.value
-		api.post('items/{}'.format(self.collection), data)
+		response = api.post('items/{}'.format(self.collection), data)
 		api.clearCache()
-		Log().info('Send complete')
+		return response
