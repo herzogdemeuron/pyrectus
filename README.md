@@ -18,7 +18,7 @@ Example use:
     data.append(pyrectus.StringField('first name', 'Jane'))
     data.append(pyrectus.IntegerField('age', 42))
     data.append(pyrectus.FloatField('height', 5.74))
-    data.append(pyrectus.BooleanField('boolean', 1))
-    data.append(pyrectus.JSONField('json', {"key": "value", "key2": "value2"}))
+    data.append(pyrectus.BooleanField('accepted', True))
+    data.append(pyrectus.JSONField('json', {"some data": "value", "key2": "value2"}))
 
     pyrectus.DirectusStorageDriver(config).add(data)
