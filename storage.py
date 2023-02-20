@@ -1,6 +1,5 @@
 """
-Code taken from https://github.com/revitron/revitron under MIT license.
-Minor adjustments where made to match a more general usecase.
+Refer to LICENSE.md and LICENSE-revitron.md for copyright info.
 """
 import json
 import re
