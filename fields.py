@@ -3,9 +3,12 @@ class GenericField:
     Generic data class.
     """
     def __init__(self, name, value):
-        self.name = str(name)
+        self.name = self._name(name)
         self.value = str(value)
         self.dataType = None
+
+    def _name(self, name):
+        return str(name).strip().replace(' ', '_').lower()
 	
 
 class StringField(GenericField):
