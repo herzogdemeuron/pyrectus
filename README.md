@@ -1,4 +1,4 @@
-# pyrectus
+# Pyrectus
 
 Pyrectus is a little python helper designed to simplyfly posting data to Directus.
 
