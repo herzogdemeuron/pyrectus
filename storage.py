@@ -256,3 +256,31 @@ class DirectusStorageDriver(AbstractStorageDriver):
 		response = api.post('items/{}'.format(self.collection), data)
 		api.clearCache()
 		return response
+	
+	def get_items_count(self):
+		"""
+		Get the count of items in a specified collection.
+		"""
+		response = self.api.get('items/{}?aggregate[count]=*'.format(self.collection))
+		try:
+			count = response[0]['count']
+			return int(count)
+		except:
+			return None
+	
+	def get_items(self, filters={}, limit=1000):
+		"""
+		Get data from a collection.
+
+		Args:
+			filters (dict, optional): The filter dict. Defaults to {}.
+			limit (int, optional): The limit of items to return. Defaults to 100.
+
+		Returns:
+			list: The list of items
+		"""
+		query_params = '?limit={}'.format(limit)
+		for key, value in filters.items():
+			query_params += '&filter[{}][_eq]={}'.format(key, value)
+		response = self.api.get('items/{}{}'.format(self.collection, query_params))
+		return response
