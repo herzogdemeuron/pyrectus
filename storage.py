@@ -336,7 +336,6 @@ class DirectusStorageDriver(AbstractStorageDriver):
 
 		response = api.patch('items/{}'.format(self.collection), data_list, fields=fields)
 		api.clearCache()
-		print("Response from Directus:", response)  # Print the response to debug
 		return response
 
 	def get_items_count(self):
