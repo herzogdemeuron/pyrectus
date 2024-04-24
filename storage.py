@@ -257,6 +257,36 @@ class DirectusStorageDriver(AbstractStorageDriver):
 		api.clearCache()
 		return response
 	
+	def add_many(self, dataProviderResultList):
+		"""
+		Send a POST request to the Directus API to store multiple items in a batch.
+		
+		Args:
+			dataProviderResultList (list of list): Each inner list contains 
+				:class:`pyrectus.fields.GenericField` objects representing one record.
+		"""
+		api = self.api
+		api.clearCache()
+
+		# Prepare the data for batch insertion
+		data_list = []
+		for dataProviderResult in dataProviderResultList:
+			item_data = {}
+			for item in dataProviderResult:
+				item_data[item.name] = item.value  # Assuming `item.value` extracts the correct value
+			data_list.append(item_data)
+
+		# The payload should directly be an array of item objects as per the Directus documentation
+		print("Final Payload:", data_list)  # Debugging line to see what is sent to Directus
+		response = api.post('items/{}'.format(self.collection), data_list)
+		api.clearCache()
+		print("Response from Directus:", response)  # Print the response to debug
+		return response
+
+
+
+
+	
 	def get_items_count(self):
 		"""
 		Get the count of items in a specified collection.
@@ -268,19 +298,26 @@ class DirectusStorageDriver(AbstractStorageDriver):
 		except:
 			return None
 	
-	def get_items(self, filters={}, limit=1000):
+	def get_items(self, filters={}, limit=1000, fields=None):
 		"""
 		Get data from a collection.
 
 		Args:
 			filters (dict, optional): The filter dict. Defaults to {}.
 			limit (int, optional): The limit of items to return. Defaults to 100.
+			fields (list, optional): The list of fields to return. Defaults to None.
 
 		Returns:
 			list: The list of items
 		"""
 		query_params = '?limit={}'.format(limit)
+
 		for key, value in filters.items():
 			query_params += '&filter[{}][_eq]={}'.format(key, value)
+		
+		if fields:
+			fields_param = ','.join(fields)
+			query_params += '&fields={}'.format(fields_param)
+
 		response = self.api.get('items/{}{}'.format(self.collection, query_params))
 		return response

@@ -4,7 +4,7 @@ class GenericField:
     """
     def __init__(self, name, value):
         self.name = self._name(name)
-        self.value = str(value)
+        self.value = value
         self.dataType = None
 
     def _name(self, name):
