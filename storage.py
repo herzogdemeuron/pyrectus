@@ -99,19 +99,54 @@ class DirectusAPI():
 				Log().error(response.json())
 			return None
 
-	def post(self, endpoint, data):
+	def post(self, endpoint, data, fields=None):
 		"""
 		Post data to a given enpoint.
 
 		Args:
 			endpoint (string): The endpoint
 			data (dict): The data dict
+			fields (list, optional): The list of fields to return. Defaults to None.
 
 		Returns:
 			dict: The reponse dictionary
 		"""
+		url = '{}/{}'.format(self.host, endpoint)
+		if fields:
+			url += '?fields={}'.format(','.join(fields))
 		response = requests.post(
-		    '{}/{}'.format(self.host, endpoint),
+		    url,
+		    headers=self._headers,
+		    data=json.dumps(data),
+		    allow_redirects=True
+		)
+		Log().info('Directus status code: {}'.format(response.status_code))
+		try:
+			responseJson = response.json()
+			return responseJson['data']
+		except:
+			Log().error(data)
+			Log().error('Request has failed')
+			Log().error(response.json())
+			return None
+	
+	def patch(self, endpoint, data, fields=None):
+		"""
+		patch data to a given enpoint to update data.
+
+		Args:
+			endpoint (string): The endpoint
+			data (dict): The data dict
+			fields (list, optional): The list of fields to return. Defaults to None.
+
+		Returns:
+			dict: The reponse dictionary
+		"""
+		url = '{}/{}'.format(self.host, endpoint)
+		if fields:
+			url += '?fields={}'.format(','.join(fields))
+		response = requests.post(
+		    url,
 		    headers=self._headers,
 		    data=json.dumps(data),
 		    allow_redirects=True
@@ -257,7 +292,7 @@ class DirectusStorageDriver(AbstractStorageDriver):
 		api.clearCache()
 		return response
 	
-	def add_many(self, dataProviderResultList):
+	def add_many(self, dataProviderResultList, fields=None):
 		"""
 		Send a POST request to the Directus API to store multiple items in a batch.
 		
@@ -276,17 +311,34 @@ class DirectusStorageDriver(AbstractStorageDriver):
 				item_data[item.name] = item.value  # Assuming `item.value` extracts the correct value
 			data_list.append(item_data)
 
-		# The payload should directly be an array of item objects as per the Directus documentation
-		print("Final Payload:", data_list)  # Debugging line to see what is sent to Directus
-		response = api.post('items/{}'.format(self.collection), data_list)
+		response = api.post('items/{}'.format(self.collection), data_list, fields=fields)
+		api.clearCache()
+		return response
+	
+	def update_many(self, dataProviderResultList, fields=None):
+		"""
+		Send a PATCH request to the Directus API to update multiple items in a batch.
+		
+		Args:
+			dataProviderResultList (list of list): Each inner list contains 
+				:class:`pyrectus.fields.GenericField` objects representing one record.
+		"""
+		api = self.api
+		api.clearCache()
+
+		# Prepare the data for batch insertion
+		data_list = []
+		for dataProviderResult in dataProviderResultList:
+			item_data = {}
+			for item in dataProviderResult:
+				item_data[item.name] = item.value  # Assuming `item.value` extracts the correct value
+			data_list.append(item_data)
+
+		response = api.patch('items/{}'.format(self.collection), data_list, fields=fields)
 		api.clearCache()
 		print("Response from Directus:", response)  # Print the response to debug
 		return response
 
-
-
-
-	
 	def get_items_count(self):
 		"""
 		Get the count of items in a specified collection.
