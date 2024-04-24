@@ -145,7 +145,7 @@ class DirectusAPI():
 		url = '{}/{}'.format(self.host, endpoint)
 		if fields:
 			url += '?fields={}'.format(','.join(fields))
-		response = requests.post(
+		response = requests.patch(
 		    url,
 		    headers=self._headers,
 		    data=json.dumps(data),
