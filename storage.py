@@ -160,7 +160,31 @@ class DirectusAPI():
 			Log().error('Request has failed')
 			Log().error(response.json())
 			return None
+	
+	def delete(self, endpoint, ids):
+		"""
+		Delete data from a given endpoint.
 
+		Args:
+			endpoint (string): The endpoint
+			ids (list): The list of ids to delete
+
+		Returns:
+			dict: The reponse dictionary
+		"""
+		response = requests.delete(
+		    '{}/{}'.format(self.host, endpoint),
+		    headers=self._headers,
+		    data=json.dumps(ids),
+		    allow_redirects=True
+		)
+		if response.status_code == 204:
+			Log().info('Items deleted successfully')
+			return True
+		else:
+			Log().error('Failed to delete items')
+			return False
+	
 	def collectionExists(self):
 		"""
 		Test whether a collection exists.	 
@@ -337,6 +361,20 @@ class DirectusStorageDriver(AbstractStorageDriver):
 		response = api.patch('items/{}'.format(self.collection), data_list, fields=fields)
 		api.clearCache()
 		return response
+	
+	def delete(self, ids):
+		"""
+		Send a DELETE request to the Directus API to delete multiple items in a batch.
+		
+		Args:
+			ids (list): The list of item IDs to delete.
+		"""
+		api = self.api
+		api.clearCache()
+
+		deleted = api.delete('items/{}'.format(self.collection), ids)
+		api.clearCache()
+		return deleted
 
 	def get_items_count(self):
 		"""
