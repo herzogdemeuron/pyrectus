@@ -355,7 +355,7 @@ class DirectusStorageDriver(AbstractStorageDriver):
 		for dataProviderResult in dataProviderResultList:
 			item_data = {}
 			for item in dataProviderResult:
-				item_data[item.name] = item.value  # Assuming `item.value` extracts the correct value
+				item_data[item.name] = item.value
 			data_list.append(item_data)
 
 		response = api.patch('items/{}'.format(self.collection), data_list, fields=fields)
