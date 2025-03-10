@@ -338,6 +338,35 @@ class DirectusStorageDriver(AbstractStorageDriver):
 		response = api.post('items/{}'.format(self.collection), data_list, fields=fields)
 		api.clearCache()
 		return response
+
+	def update(self, item_id, dataProviderResults, single_field=False):
+		"""
+		Update an existing item in the Directus collection
+
+		Args:
+			item_id (int): The ID of the item to update
+			dataProviderResults (list or tuple): The list of 
+				:class:`pyrectus.fields.GenericField` objects or a single tuple
+			single_field (bool): If True, update only a single field
+		"""
+		api = self.api
+		api.clearCache()
+		
+		if single_field:
+			if not isinstance(dataProviderResults, tuple) or len(dataProviderResults) != 2:
+				raise ValueError("For single field update, dataProviderResults should be a tuple of (field_name, value)")
+			field_name, value = dataProviderResults
+			self._createMissingFields([type('GenericField', (), {'name': field_name, 'dataType': type(value).__name__})()])
+			update_data = {field_name: value}
+		else:
+			self._createMissingFields(dataProviderResults)
+			update_data = {item.name: item.value for item in dataProviderResults}
+		
+		update_data['timestamp'] = self.timestamp
+		
+		response = api.patch('items/{}/{}'.format(self.collection, item_id), update_data)
+		api.clearCache()
+		return response
 	
 	def update_many(self, dataProviderResultList, fields=None):
 		"""
