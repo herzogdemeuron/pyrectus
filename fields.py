@@ -1,10 +1,10 @@
-class GenericField:
+class GenericField(object):
     """
     Generic data class.
     """
     def __init__(self, name, value):
         self.name = self._name(name)
-        self.value = str(value)
+        self.value = value
         self.dataType = None
 
     def _name(self, name):
@@ -23,7 +23,7 @@ class StringField(GenericField):
             name (str): The field name
             value (str): The field value
         """
-        super().__init__(name, value)
+        super(StringField, self).__init__(name, value)
         self.dataType = 'string'
 	
 
@@ -36,7 +36,7 @@ class IntegerField(GenericField):
         value (str): The field value
     """
     def __init__(self, name, value):
-        super().__init__(name, value)
+        super(IntegerField).__init__(name, value)
         self.dataType = 'integer'
 	
 
@@ -49,7 +49,7 @@ class FloatField(GenericField):
         value (str): The field value
     """
     def __init__(self, name, value):
-        super().__init__(name, value)
+        super(FloatField).__init__(name, value)
         self.dataType = 'float'
 
 
@@ -62,7 +62,7 @@ class TimestampField(GenericField):
         value (str): The field value
     """
     def __init__(self, name, value):
-        super().__init__(name, value)
+        super(TimestampField).__init__(name, value)
         self.dataType = 'timestamp'
 
 
@@ -76,7 +76,7 @@ class JSONField(GenericField):
     """
     def __init__(self, name, value):
         import json
-        super().__init__(name, json.dumps(value))
+        super(JSONField).__init__(name, json.dumps(value))
         self.dataType = 'json'
 
 
@@ -90,5 +90,5 @@ class BooleanField(GenericField):
     """
     def __init__(self, name, value):
         import json
-        super().__init__(name, json.dumps(value))
+        super(BooleanField).__init__(name, json.dumps(value))
         self.dataType = 'boolean'

@@ -5,8 +5,11 @@ import os
 class Log():
     def __init__(self):
         currentFile = os.path.abspath(__file__)
-        baseDir = os.path.dirname(currentFile)
-        logging.basicConfig(filename=os.path.join(baseDir, 'pyrectus.log'), level=logging.INFO,
+        log_dir = "C:\HdM-DT\logs\pyrectus"
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+        #baseDir = os.path.dirname(currentFile)
+        logging.basicConfig(filename=os.path.join(log_dir, 'pyrectus.log'), level=logging.INFO,
                                 format='%(asctime)s %(levelname)s %(message)s')
 
     def info(self, message=''):
