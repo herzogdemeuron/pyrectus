@@ -13,39 +13,39 @@ from abc import ABCMeta, abstractmethod
 
 
 def reTokenCallback(match):
-	return os.getenv(match.group(1))
+    return os.getenv(match.group(1))
 
 def parseToken(token):
-	return re.sub(r'\{\{\s*(\w+)\s*\}\}', reTokenCallback, token)
+    return re.sub(r'\{\{\s*(\w+)\s*\}\}', reTokenCallback, token)
 
 
 class AbstractStorageDriver:
-	"""
-	The abstract storage driver is the base class for all storage driver classes.
-	"""
-	__metaclass__ = ABCMeta
+    """
+    The abstract storage driver is the base class for all storage driver classes.
+    """
+    __metaclass__ = ABCMeta
 
-	def __init__(self, config):
-		"""
-		Init a new storage driver instance with a givenm configuration.
+    def __init__(self, config):
+        """
+        Init a new storage driver instance with a givenm configuration.
 
-		Args:
-			config (dict): The driver configuration
-		"""
-		self.config = config
-		self.timestamp = datetime.fromtimestamp(time()).strftime('%Y-%m-%d %H:%M:%S')
+        Args:
+            config (dict): The driver configuration
+        """
+        self.config = config
+        self.timestamp = datetime.fromtimestamp(time()).strftime('%Y-%m-%d %H:%M:%S')
 
-	@abstractmethod
-	def add(self, dataProviderResults, modelSize):
-		"""
-		Add a new snapshot.
+    @abstractmethod
+    def add(self, dataProviderResults, modelSize):
+        """
+        Add a new snapshot.
 
-		Args:
-			dataProviderResults (list): The list of 
-				:class:`revitron.analyze.DataProviderResult` objects
-			modelSize (float): The local file's size in bytes
-		"""
-		pass
+        Args:
+            dataProviderResults (list): The list of 
+                :class:`revitron.analyze.DataProviderResult` objects
+            modelSize (float): The local file's size in bytes
+        """
+        pass
 
 
 class DirectusAPI():
